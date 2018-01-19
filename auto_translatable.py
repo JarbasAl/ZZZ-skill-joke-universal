@@ -17,9 +17,8 @@ class AutotranslatableSkill(MycroftSkill):
 
     def translate(self, text, lang=None):
         lang = lang or self.lang
-        sentence = translate(text, lang)
-        translated = unicodedata.normalize('NFKD', unicode(
-            sentence)).encode('ascii',
+        sentence = translate(unicode(text), lang)
+        translated = unicodedata.normalize('NFKD', unicode(sentence)).encode('ascii',
                                                                     'ignore')
         return translated
 
@@ -77,14 +76,14 @@ class AutotranslatableFallback(FallbackSkill):
         self.input_lang = None
 
     def language_detect(self, utterance):
-        utterance = unicodedata.normalize('NFKD', utterance).encode('ascii',
+        utterance = unicodedata.normalize('NFKD', unicode(utterance)).encode('ascii',
                                                                     'ignore')
         return language_detect(utterance)
 
     def translate(self, text, lang=None):
         lang = lang or self.lang
-        sentence = translate(text, lang)
-        translated = unicodedata.normalize('NFKD', sentence).encode('ascii',
+        sentence = translate(unicode(text), lang)
+        translated = unicodedata.normalize('NFKD', unicode(sentence)).encode('ascii',
                                                                     'ignore')
         return translated
 
