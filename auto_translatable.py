@@ -42,6 +42,7 @@ class AutotranslatableSkill(MycroftSkill):
                """
         # translate utterance for skills that generate speech at
         # runtime, or by request
+        message_context = message_context or {}
         utterance_lang = self.language_detect(utterance)
         if "-" in utterance_lang:
             utterance_lang = utterance_lang.split("-")[0]
@@ -61,7 +62,11 @@ class AutotranslatableSkill(MycroftSkill):
                 "mute": mute,
                 "more_speech": more_speech,
                 "metadata": metadata}
-        self.emitter.emit(Message("speak", data)))
+        message = dig_for_message()
+        if message:
+            self.emitter.emit(message.reply("speak", data, message_context))
+        else:
+            self.emitter.emit(Message("speak", data, message_context))
 
 
 class AutotranslatableFallback(FallbackSkill):
@@ -121,7 +126,11 @@ class AutotranslatableFallback(FallbackSkill):
                 "mute": mute,
                 "more_speech": more_speech,
                 "metadata": metadata}
-        self.emitter.emit(Message("speak", data)))
+        message = dig_for_message()
+        if message:
+            self.emitter.emit(message.reply("speak", data, message_context))
+        else:
+            self.emitter.emit(Message("speak", data, message_context))
 
     def register_fallback(self, handler, priority):
         """
@@ -149,16 +158,7 @@ class AutotranslatableFallback(FallbackSkill):
                 return success
 
             self.instance_fallback_handlers.append(universal_translate_handler)
-            skill_folder = self.root_dir  # skill
-            if not skill_folder:
-                raise EnvironmentError("could not get skill dir")
-            self._register_fallback(universal_translate_handler, priority, skill_folder,
-                                    self.handle_update_message_context)
+            self._register_fallback(universal_translate_handler, priority
         else:
             self.instance_fallback_handlers.append(handler)
-            # folder path
-            skill_folder = self.root_dir  # skill
-            if not skill_folder:
-                raise EnvironmentError("could not get skill dir")
-            self._register_fallback(handler, priority, skill_folder,
-                                    self.handle_update_message_context)
+            self._register_fallback(handler, priority)
