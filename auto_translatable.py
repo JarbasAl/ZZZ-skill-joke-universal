@@ -1,4 +1,4 @@
-from mycroft.skills.core import MycroftSkill, FallbackSkill, Message
+from mycroft.skills.core import MycroftSkill, FallbackSkill, Message, dig_for_message
 from mtranslate import translate
 import unicodedata
 from langdetect import detect as language_detect
