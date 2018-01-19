@@ -158,7 +158,7 @@ class AutotranslatableFallback(FallbackSkill):
                 return success
 
             self.instance_fallback_handlers.append(universal_translate_handler)
-            self._register_fallback(universal_translate_handler, priority
+            self._register_fallback(universal_translate_handler, priority)
         else:
             self.instance_fallback_handlers.append(handler)
             self._register_fallback(handler, priority)
