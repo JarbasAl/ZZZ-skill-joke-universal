@@ -18,21 +18,14 @@ import pyjokes
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import intent_handler
 from random import choice
-try:
-    from mycroft.skills.auto_translatable import AutotranslatableSkill
-except ImportError:
-    from os.path import dirname
-    import sys
-    sys.path.append(dirname(__file__))
-    from auto_translatable import AutotranslatableSkill
-
+from mycroft_jarbas_utils.skills.auto_translatable import AutotranslatableSkill
 
 joke_types = ['chuck', 'neutral']
 
 
-class JokingSkill(AutotranslatableSkill):
+class UniversalJokingSkill(AutotranslatableSkill):
     def __init__(self):
-        super(JokingSkill, self).__init__(name="JokingSkill")
+        super(UniversalJokingSkill, self).__init__()
 
     def speak_joke(self, lang, category):
         lang = "en"
@@ -58,9 +51,6 @@ class JokingSkill(AutotranslatableSkill):
     def handle_adult_joke(self, message):
         self.speak_joke(self.lang[:-3], 'adult')
 
-    def stop(self):
-        pass
-
 
 def create_skill():
-    return JokingSkill()
+    return UniversalJokingSkill()
