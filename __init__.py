@@ -27,29 +27,28 @@ class UniversalJokingSkill(AutotranslatableSkill):
     def __init__(self):
         super(UniversalJokingSkill, self).__init__()
 
-    def speak_joke(self, lang, category):
-        lang = "en"
-        self.speak(pyjokes.get_joke(language=lang, category=category))
+    def speak_joke(self, category):
+        self.speak(pyjokes.get_joke(category=category))
 
     @intent_handler(IntentBuilder("JokingIntent").require("Joke"))
     def handle_general_joke(self, message):
         selected = choice(joke_types)
-        self.speak_joke(self.lang[:-3], selected)
+        self.speak_joke(selected)
 
     @intent_handler(IntentBuilder("ChuckJokeIntent").require("Joke")
                     .require("Chuck"))
     def handle_chuck_joke(self, message):
-        self.speak_joke(self.lang[:-3], 'chuck')
+        self.speak_joke('chuck')
 
     @intent_handler(IntentBuilder("NeutralJokeIntent").require("Joke")
                     .require("Neutral"))
     def handle_neutral_joke(self, message):
-        self.speak_joke(self.lang[:-3], 'neutral')
+        self.speak_joke('neutral')
 
     @intent_handler(IntentBuilder("AdultJokeIntent").require("Joke")
                     .require("Adult"))
     def handle_adult_joke(self, message):
-        self.speak_joke(self.lang[:-3], 'adult')
+        self.speak_joke('adult')
 
 
 def create_skill():
