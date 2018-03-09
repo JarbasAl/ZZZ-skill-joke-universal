@@ -30,7 +30,7 @@ class UniversalJokingSkill(AutotranslatableSkill):
     def get_intro_message(self):
         name = "jokes"
         return "you installed universal " + name + " skill, you should " \
-               "also remove or blacklist the official " + name + \
+               "also blacklist the official " + name + \
                " skill to avoid potential problems"
 
     def speak_joke(self, category):
