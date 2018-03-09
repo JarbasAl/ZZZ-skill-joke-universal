@@ -27,6 +27,12 @@ class UniversalJokingSkill(AutotranslatableSkill):
     def __init__(self):
         super(UniversalJokingSkill, self).__init__()
 
+    def get_intro_message(self):
+        name = "jokes"
+        return "you installed universal " + name + " skill, you should " \
+               "also remove or blacklist the official " + name + \
+               " skill to avoid potential problems"
+
     def speak_joke(self, category):
         self.speak(pyjokes.get_joke(category=category))
 
