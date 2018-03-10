@@ -14,13 +14,13 @@
 
 
 import pyjokes
-
+import requests
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import intent_handler
 from random import choice
 from mycroft_jarbas_utils.skills.auto_translatable import AutotranslatableSkill
 
-joke_types = ['chuck', 'neutral']
+joke_types = ['chuck', 'neutral', 'dad']
 
 
 class UniversalJokingSkill(AutotranslatableSkill):
@@ -34,7 +34,19 @@ class UniversalJokingSkill(AutotranslatableSkill):
                " skill to avoid potential problems"
 
     def speak_joke(self, category):
-        self.speak(pyjokes.get_joke(category=category))
+        if category == "dad":
+            url = "https://icanhazdadjoke.com/"
+            headers = {'Accept': 'text/plain'}
+            r = requests.get(url, headers=headers)
+            txt = r.text.encode('ascii', errors='ignore')
+            replacements = (',', '-', '!', '?', '.')
+            for f in replacements:
+                txt = txt.replace(f, '|')
+            data = txt.split("|")
+            for temp in data:
+                self.speak(temp)
+        else:
+            self.speak(pyjokes.get_joke(category=category))
 
     @intent_handler(IntentBuilder("JokingIntent").require("Joke"))
     def handle_general_joke(self, message):
@@ -55,6 +67,11 @@ class UniversalJokingSkill(AutotranslatableSkill):
                     .require("Adult"))
     def handle_adult_joke(self, message):
         self.speak_joke('adult')
+
+    @intent_handler(IntentBuilder("DadJokeIntent").require("Joke")
+                    .require("Dad"))
+    def handle_adult_joke(self, message):
+        self.speak_joke('dad')
 
 
 def create_skill():
