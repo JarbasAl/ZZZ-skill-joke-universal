@@ -9,6 +9,8 @@ The joke categories are:
 * Adult -- nothing horrible, but be ready to cover some ears
 * Chuck Norris -- jokes only a geek can love
 * Dad -- jokes from https://icanhazdadjoke.com/
+* search jokes of any kind!
+
 
 By default it will give you clean and/or geeky jokes, but you can ask a little adult humor if you feel that way.
 
@@ -18,14 +20,16 @@ _WARNING:  Laughter is not guaranteed, but eye rolls are likely._
 uses and translates english jokes by default instead of relying in pyjokes
 module for language support
 
-intent vocabulary auto-translated with google
 
 ## Examples
+
 * "Make me laugh"
 * "Tell me a Chuck Norris joke"
 * "Tell me a dad joke"
 * "I want to hear a raunchy joke"
 * "How about a neutral joke"
+* "hipster jokes"
+* "dentist joke"
 
 ## LOGS
 
@@ -42,3 +46,7 @@ Mycroft AI
 Everyone at https://github.com/pyjokes/pyjokes!
 
 Tjoen [better-jokes](https://github.com/tjoen/skill-better-jokes/)
+
+## TODOs
+
+vocab for all languages

@@ -16,7 +16,7 @@
 import pyjokes
 import requests
 from adapt.intent import IntentBuilder
-from mycroft.skills.core import intent_handler
+from mycroft.skills.core import intent_handler, intent_file_handler
 from random import choice
 from mycroft_jarbas_utils.skills.auto_translatable import AutotranslatableSkill
 
@@ -33,7 +33,9 @@ class UniversalJokingSkill(AutotranslatableSkill):
                "also blacklist the official " + name + \
                " skill to avoid potential problems"
 
-    def speak_joke(self, category):
+    def speak_joke(self, category=None):
+        if category is None:
+            category = choice(joke_types)
         if category == "dad":
             url = "https://icanhazdadjoke.com/"
             headers = {'Accept': 'text/plain'}
@@ -45,13 +47,24 @@ class UniversalJokingSkill(AutotranslatableSkill):
             data = txt.split("|")
             for temp in data:
                 self.speak(temp)
-        else:
+        elif category in ["chuck", "neutral", "adult"]:
             self.speak(pyjokes.get_joke(category=category))
+        else:
+            url = "https://icanhazdadjoke.com/search?term="+category
+            headers = {'Accept': 'text/plain'}
+            r = requests.get(url, headers=headers)
+            txt = r.text.encode('ascii', errors='ignore')
+            if not txt:
+                self.speak_dialog("no_joke", {"category": category})
+            else:
+                data = [joke for joke in txt.split(".") if joke]
+                self.speak(choice(data))
 
-    @intent_handler(IntentBuilder("JokingIntent").require("Joke"))
+    @intent_file_handler("Joke.intent")
     def handle_general_joke(self, message):
-        selected = choice(joke_types)
-        self.speak_joke(selected)
+        joke_type = message.data.get("type")
+        print joke_type
+        self.speak_joke(joke_type)
 
     @intent_handler(IntentBuilder("ChuckJokeIntent").require("Joke")
                     .require("Chuck"))
@@ -70,7 +83,7 @@ class UniversalJokingSkill(AutotranslatableSkill):
 
     @intent_handler(IntentBuilder("DadJokeIntent").require("Joke")
                     .require("Dad"))
-    def handle_adult_joke(self, message):
+    def handle_dad_joke(self, message):
         self.speak_joke('dad')
 
 
