@@ -45,6 +45,8 @@ Mycroft AI
 
 Everyone at https://github.com/pyjokes/pyjokes!
 
+Everyone at https://icanhazdadjoke.com/
+
 Tjoen [better-jokes](https://github.com/tjoen/skill-better-jokes/)
 
 ## TODOs
